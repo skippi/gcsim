@@ -52,7 +52,7 @@ export class WorkerPool {
 
     const loading = () =>
       new Promise((resolve) => {
-        const w = new Worker(new URL("worker.ts", import.meta.url));
+        const w = new Worker(new URL("worker.ts", import.meta.url), { type: "module" });
         this._workers.push(w);
         this._avail.push(false);
 
@@ -72,7 +72,7 @@ export class WorkerPool {
       });
     loading().then(() => {
       for (; i < count; i++) {
-        const w = new Worker(new URL("worker.ts", import.meta.url));
+        const w = new Worker(new URL("worker.ts", import.meta.url), { type: "module" });
         this._workers.push(w);
         this._avail.push(false);
 

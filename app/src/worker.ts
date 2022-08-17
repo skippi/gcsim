@@ -1,3 +1,5 @@
+import pako from 'pako';
+
 // let url = process.env.PUBLIC_URL + "/wasm_exec.js";
 // @ts-ignore
 self.importScripts("wasm_exec.js");
@@ -20,8 +22,15 @@ declare function setcfg(content: string): string;
 declare function checkcfg(content: string): string;
 declare function version(): string;
 
+async function instantiateWasm() {
+  const wasmGz = await fetch("/main.wasm.gz")
+  const buffer = await wasmGz.arrayBuffer()
+  const wasm = pako.ungzip(new Uint8Array(buffer))
+  return WebAssembly.instantiate(wasm, go.importObject)
+}
+
 let inst: WebAssembly.Instance;
-WebAssembly.instantiateStreaming(fetch("/main.wasm"), go.importObject)
+instantiateWasm()
   .then((result) => {
     inst = result.instance;
     go.run(inst);

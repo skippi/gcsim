@@ -14,6 +14,7 @@ debug.html
 internal/characters/replace.txt
 .idea
 *.wasm
+*.wasm.gz
 **.zip
 ./cmd/gcsim/*.exe
 ./cmd/gcsim/gsim.exe
